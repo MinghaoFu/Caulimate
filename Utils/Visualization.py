@@ -19,7 +19,7 @@ import networkx as nx
 from Caulimate.Utils.Tools import makedir, check_array, bin_mat
 from Caulimate.Utils.GraphUtils import threshold_till_dag, is_dag
 
-def plot_sparsity_matrix(alphas, title):
+def plot_sparsity_matrix(alphas, title, plt_num=True):
     mat_a = torch.tensor(alphas).numpy()
     # normalize the matrix element to (0,1)
     min_val = np.min(np.clip(mat_a, -4, 4))
@@ -29,10 +29,11 @@ def plot_sparsity_matrix(alphas, title):
     mat_a_values = np.round(mat_a, decimals=2)
     fig, ax = plt.subplots()
     fig_alpha = ax.imshow(mat_a, cmap='Greens', vmin=0, vmax=1)
-    for i in range(mat_a.shape[0]):
-        for j in range(mat_a.shape[1]):
-            ax.text(j, i, mat_a_values[i, j],
-                    ha='center', va='center', color='black')
+    if plt_num:
+        for i in range(mat_a.shape[0]):
+            for j in range(mat_a.shape[1]):
+                ax.text(j, i, mat_a_values[i, j],
+                        ha='center', va='center', color='black')
     cbar = fig.colorbar(fig_alpha)
 
     ax.set_xticks(np.arange(mat_a.shape[1]))
